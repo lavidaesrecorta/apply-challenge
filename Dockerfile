@@ -3,11 +3,12 @@ FROM node:lts
 WORKDIR /app
 
 COPY package*.json ./
+COPY yarn.lock ./
 
-RUN npm install
+RUN yarn
 
 COPY . .
 
-RUN npm run build
+RUN yarn run build
 
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "yarn", "start:dev" ]
