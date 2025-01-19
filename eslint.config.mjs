@@ -33,7 +33,7 @@ export default [{
 
         parserOptions: {
             project: "tsconfig.json",
-            tsconfigRootDir: "/home/kwwa/Documents/apply-digital/first-test/nestjs-challenge",
+            tsconfigRootDir: "./",
         },
     },
 
