@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { contentfulItem } from './contentful-api.types';
+
 
 @Injectable()
 export class ContentfulApiService {
@@ -14,8 +16,8 @@ export class ContentfulApiService {
 
     async testService() {
         const response = await fetch(this.baseUrl)
-        console.log(await response.json());
-        
+        const resolveRespone: contentfulItem[] = (await response.json())["items"]
+        console.log(resolveRespone);
     }
 
 }
