@@ -1,8 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { DateRange, PriceRange } from 'src/products/interfaces/paginatedResult.interface';
 import { ReportsService } from './reports.service';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('reports')
+@UseGuards(JwtAuthGuard)
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
     @Get("percentage/non-deleted")
