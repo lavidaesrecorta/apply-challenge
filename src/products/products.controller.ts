@@ -20,6 +20,11 @@ export class ProductsController {
     return this.productsService.findPaginated(page, parsedFiler, parsedPriceRange);
   }
 
+    @Delete(':id')
+  async remove(@Param('id') id?: string, @Param('sku') sku?: string) {
+    await this.productsService.softDelete(+id, sku);
+  }
+
   // --- Default CRUD methods ---
 
   // @Post()

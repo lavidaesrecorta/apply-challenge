@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Product {
     @PrimaryGeneratedColumn()
     id: number;
-    @Column({unique: true})
+    @Column({unique: true}) //Should the sku be unique? What if its reused for the same product in different locales?
     sku: string;
     @Column()
     locale: string;
@@ -28,7 +28,8 @@ export class Product {
     contentfulCreatedAt: Date;
     @Column({ type: 'timestamptz' })
     contentfulUpdatedAt: Date;
-
+    @DeleteDateColumn()
+    deletedAt: Date;  
 
 
     constructor(product: Partial<Product>){

@@ -26,8 +26,8 @@ export class ContentfulApiService {
             const newProductDto: CreateProductDto = {
                 ...item.fields,
                 locale: item.sys.locale,
-                createdAt: new Date(item.sys.createdAt),
-                updatedAt: new Date(item.sys.updatedAt),
+                contentfulCreatedAt: new Date(item.sys.createdAt),
+                contentfulUpdatedAt: new Date(item.sys.updatedAt),
             } 
             this.productsService.createOrUpdate(newProductDto)
         })

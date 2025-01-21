@@ -9,6 +9,6 @@ export class CreateProductDto {
     price: number;
     currency: string;
     stock: number;
-    createdAt: Date;
-    updatedAt: Date;
+    contentfulCreatedAt: Date;
+    contentfulUpdatedAt: Date;
 }

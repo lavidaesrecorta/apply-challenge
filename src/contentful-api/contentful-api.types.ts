@@ -23,7 +23,7 @@ export interface contentfulProductFields{
     model: string;
     category: string;
     color: string;
-    price: string;
+    price: number;
     currency: string;
     stock: number;
 }

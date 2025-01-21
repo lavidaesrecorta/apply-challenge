@@ -15,10 +15,16 @@ export class ProductsService {
     private readonly productsRepository: Repository<Product>
   ) {}
 
-
   async createOrUpdate(createProductDto: CreateProductDto) {
-    const response = await this.productsRepository.upsert(createProductDto, ['sku']);
-    console.log(response);
+
+    const existingProduct = await this.productsRepository.findOne({
+      where: { sku: createProductDto.sku },
+      withDeleted: true
+    });
+    if (existingProduct) {
+      // If the product is soft-deleted, we update new values from contentful but still wont show in the rest API.
+      return await this.productsRepository.save(existingProduct)      
+    }
   }
 
   async create(createProductDto: CreateProductDto) {
@@ -65,11 +71,36 @@ export class ProductsService {
     return this.productsRepository.delete(id);
   }
 
-  async softDelete(id: number) {
-    return this.productsRepository
-    .createQueryBuilder()
-    .softDelete()
-    .where("id = :id", { id })
-    .execute();
+  async softDelete(id?: number, sku?: string) {
+    if (id != null) {
+      return this.productsRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where("id = :id", { id })
+      .execute();
+    }
+    if (sku != null) {
+      return this.productsRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where("sku = :sku", { sku })
+      .execute();
+    }
+
+    return false
+  }
+  async restoreSoftDeleted(id?: number, sku?: string){
+    if (id != null || id != 0) {
+      return this.productsRepository.restore(id)
+    }
+    if (sku != null) {
+       this.productsRepository
+      .createQueryBuilder()
+      .withDeleted()
+      .update({deletedAt: null})
+      .where("sku = :sku", { sku })
+      .execute();
+    }
+    return false
   }
 }
