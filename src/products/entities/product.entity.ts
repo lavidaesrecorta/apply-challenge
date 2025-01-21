@@ -9,7 +9,7 @@ import {
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ unique: true }) //Should the sku be unique? What if its reused for the same product in different locales?
+  @Column({ unique: true })
   sku: string;
   @Column()
   locale: string;
