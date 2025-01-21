@@ -4,9 +4,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import {
   Between,
   EntityManager,
-  IsNull,
   MoreThanOrEqual,
-  Not,
   Repository,
 } from 'typeorm';
 import { Product } from './entities/product.entity';
@@ -152,7 +150,7 @@ export class ProductsService {
 
   async update(id: number, updateProductDto: UpdateProductDto) {
     const product = await this.productsRepository.findOneBy({ id });
-    //add update logic
+    Object.assign(product, updateProductDto);
     return this.entityManager.save(product);
   }
 
