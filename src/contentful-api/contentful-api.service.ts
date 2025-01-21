@@ -21,8 +21,13 @@ export class ContentfulApiService {
 
     async FetchDataFromContentful() {
         const response = await fetch(this.baseUrl)
-        const resolveRespone: contentfulItem[] = (await response.json())["items"]     
-        const productEntities = resolveRespone.map(async (item) => {
+                
+        const resolveResponse: contentfulItem[] = (await response.json())["items"]   
+        if (!resolveResponse || !Array.isArray(resolveResponse)) {
+            console.error('Failed to fetch or parse Contentful data: ' + resolveResponse);
+            return;
+        }  
+        const productEntities = resolveResponse.map(async (item) => {
             const newProductDto: CreateProductDto = {
                 ...item.fields,
                 locale: item.sys.locale,
@@ -30,7 +35,7 @@ export class ContentfulApiService {
                 contentfulUpdatedAt: new Date(item.sys.updatedAt),
             } 
             const res = await this.productsService.createOrUpdate(newProductDto)
-            
+            return res
         })
     }
 
