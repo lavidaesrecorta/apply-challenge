@@ -6,15 +6,23 @@ import { ProductsService } from 'src/products/products.service';
 export class ReportsService {
     constructor(private readonly productsService: ProductsService) {}
 
-    async getDeletedPercentage(priceRange: PriceRange, dateRange: DateRange) {
+    async getDeletedPercentage() {
+        const [total, nonDeleted] = await this.productsService.getNonDeletedCount()
+        const deleted = total-nonDeleted
+        const deletedPercentage = (deleted/total)*100
+        return deletedPercentage
+        
+    }
+
+    async getNonDeletedPercentage(priceRange: PriceRange, dateRange: DateRange) {
         const [total, nonDeleted] = await this.productsService.getNonDeletedCount(priceRange,dateRange)
-        console.log(total);
-        console.log(nonDeleted);
+        const nonDeletedPercentage = (nonDeleted/total)*100
+        return nonDeletedPercentage
         
     }
 
     async getAvgPriceByCategory(category?: string) {
         const avgPrice = await this.productsService.getAvgPrice(category)
-        console.log(avgPrice);
+        return avgPrice
     }
 }

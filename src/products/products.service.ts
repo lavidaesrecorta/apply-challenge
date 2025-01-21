@@ -87,7 +87,7 @@ export class ProductsService {
     return false
   }
 
-  async getNonDeletedCount(priceRange: PriceRange, dateRange: DateRange){
+  async getNonDeletedCount(priceRange?: PriceRange, dateRange?: DateRange){
 
     const queryBuilder = this.productsRepository.createQueryBuilder()
     if (priceRange != null) {

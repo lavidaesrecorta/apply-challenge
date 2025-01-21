@@ -5,14 +5,20 @@ import { ReportsService } from './reports.service';
 @Controller('reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
-    @Get()
+    @Get("percentage/non-deleted")
     async getNonDeletedPercent(
         @Query('priceRange') priceRange: string,
         @Query('dateRange') dateRange: string,
   )  {
       const parsedPriceRange : PriceRange | null = priceRange ? JSON.parse(decodeURIComponent(priceRange)) : null;
       const parsedDateRange : DateRange | null = dateRange ? JSON.parse(decodeURIComponent(dateRange)) : null;
-      return this.reportsService.getDeletedPercentage(parsedPriceRange, parsedDateRange)
+      return this.reportsService.getNonDeletedPercentage(parsedPriceRange, parsedDateRange)
+    }
+
+    @Get("percentage/deleted")
+    async getDeletedPercent(
+  )  {
+      return this.reportsService.getDeletedPercentage()
     }
 
     @Get("avg-price")
