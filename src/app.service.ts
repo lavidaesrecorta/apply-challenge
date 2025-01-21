@@ -7,6 +7,7 @@ export class AppService {
     constructor(private contentfulApi: ContentfulApiService) {}
   
   getHello(): string {
+    this.contentfulApi.FetchDataFromContentful()
     return 'Hello World!';
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Between, EntityManager, Repository } from 'typeorm';
+import { Between, EntityManager, MoreThanOrEqual, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginatedResult, PriceRange } from './interfaces/paginatedResult.interface';
@@ -25,11 +25,12 @@ export class ProductsService {
       // If the product is soft-deleted, we update new values from contentful but still wont show in the rest API.
       return await this.productsRepository.save(existingProduct)      
     }
+    return await this.create(createProductDto)
   }
 
   async create(createProductDto: CreateProductDto) {
     const product = new Product(createProductDto)
-    await this.entityManager.save(product);
+    return await this.entityManager.save(product);
   }
 
   async findAll() {
@@ -40,16 +41,21 @@ export class ProductsService {
     return this.productsRepository.findOneBy({id});
   }
 
-  async findPaginated(pageNumber: number = 1, filter: Partial<CreateProductDto>, priceRange: PriceRange): Promise<PaginatedResult> {
+  async findPaginated(pageNumber: number = 1, filter: Partial<CreateProductDto>, priceRange?: PriceRange): Promise<PaginatedResult> {
     const take = 5
     const skip = (pageNumber - 1) * take
 
     delete filter.price
+    let priceFilter = MoreThanOrEqual(0)
+
+    if (priceRange != null) {
+      priceFilter = Between(priceRange.min,priceRange.max)
+    }
 
     const [data,total] = await this.productsRepository.findAndCount({
       take,
       skip,
-      where: { ...filter, price: Between(priceRange.min,priceRange.max) }
+      where: { ...filter, price: priceFilter }
     });
 
     const totalPages = Math.ceil(total / take);

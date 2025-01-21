@@ -22,14 +22,15 @@ export class ContentfulApiService {
     async FetchDataFromContentful() {
         const response = await fetch(this.baseUrl)
         const resolveRespone: contentfulItem[] = (await response.json())["items"]     
-        const productEntities = resolveRespone.map((item) => {
+        const productEntities = resolveRespone.map(async (item) => {
             const newProductDto: CreateProductDto = {
                 ...item.fields,
                 locale: item.sys.locale,
                 contentfulCreatedAt: new Date(item.sys.createdAt),
                 contentfulUpdatedAt: new Date(item.sys.updatedAt),
             } 
-            this.productsService.createOrUpdate(newProductDto)
+            const res = await this.productsService.createOrUpdate(newProductDto)
+            
         })
     }
 
