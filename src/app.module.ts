@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { ProductsModule } from './products/products.module';
-import { ConfigModule } from '@nestjs/config';
 import { ContentfulApiService } from './contentful-api/contentful-api.service';
 import { ContentfulApiModule } from './contentful-api/contentful-api.module';
 

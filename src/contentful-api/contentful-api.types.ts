@@ -30,6 +30,6 @@ export interface contentfulProductFields{
 
 export interface contentfulItem {
     metadata: contentfulItemMetadata;
-    sys: contentfulItem;
+    sys: contentfulItemSys;
     fields: contentfulProductFields;
 }
