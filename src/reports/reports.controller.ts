@@ -21,15 +21,17 @@ export class ReportsController {
     const parsedDateRange: DateRange | null = dateRange
       ? JSON.parse(decodeURIComponent(dateRange))
       : null;
-    return this.reportsService.getNonDeletedPercentage(
-      parsedPriceRange,
-      parsedDateRange,
-    );
+    return {
+      nonDeletedPercentage: this.reportsService.getNonDeletedPercentage(
+        parsedPriceRange,
+        parsedDateRange,
+      ),
+    };
   }
 
   @Get('percentage/deleted')
   async getDeletedPercent() {
-    return this.reportsService.getDeletedPercentage();
+    return { deletedPercentage: this.reportsService.getDeletedPercentage() };
   }
 
   @Get('avg-price')
@@ -37,6 +39,8 @@ export class ReportsController {
     const parsedCategory: string | null = category
       ? decodeURIComponent(category)
       : null;
-    return this.reportsService.getAvgPriceByCategory(parsedCategory);
+    return {
+      avgPrice: this.reportsService.getAvgPriceByCategory(parsedCategory),
+    };
   }
 }
