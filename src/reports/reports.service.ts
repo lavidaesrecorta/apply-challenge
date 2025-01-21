@@ -12,4 +12,9 @@ export class ReportsService {
         console.log(nonDeleted);
         
     }
+
+    async getAvgPriceByCategory(category?: string) {
+        const avgPrice = await this.productsService.getAvgPrice(category)
+        console.log(avgPrice);
+    }
 }

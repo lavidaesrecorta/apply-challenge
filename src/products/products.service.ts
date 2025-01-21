@@ -110,6 +110,16 @@ export class ProductsService {
     return [totalCount,nonDeletedCount] 
   }
 
+  async getAvgPrice(category?: string){
+
+    const queryBuilder = this.productsRepository.createQueryBuilder().select('AVG(Product.price)', 'averagePrice')
+    if (category != null) {
+      queryBuilder.where('LOWER(Product.category) = LOWER(:category)', { category })
+    }
+    const averagePrice = await queryBuilder.getRawOne()
+    return averagePrice
+  }
+
   // Default CRUD methods below...
 
   async create(createProductDto: CreateProductDto) {
