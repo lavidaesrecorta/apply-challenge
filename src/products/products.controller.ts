@@ -16,7 +16,6 @@ export class ProductsController {
 ): Promise<PaginatedResult>  {
     const parsedFiler : Partial<CreateProductDto> = filter ? JSON.parse(decodeURIComponent(filter)) : {};
     const parsedPriceRange : PriceRange | null = priceRange ? JSON.parse(decodeURIComponent(priceRange)) : null;
-    console.log(parsedPriceRange);
     return this.productsService.findPaginated(page, parsedFiler, parsedPriceRange);
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { contentfulItem } from './contentful-api.types';
 import { CreateProductDto } from 'src/products/dto/create-product.dto';
@@ -8,6 +8,8 @@ import { ProductsService } from 'src/products/products.service';
 @Injectable()
 export class ContentfulApiService {
     baseUrl = ""
+    private readonly logger = new Logger(ContentfulApiService.name);
+    
     constructor(
         private configService: ConfigService,
         private productsService: ProductsService
@@ -24,9 +26,12 @@ export class ContentfulApiService {
                 
         const resolveResponse: contentfulItem[] = (await response.json())["items"]   
         if (!resolveResponse || !Array.isArray(resolveResponse)) {
-            console.error('Failed to fetch or parse Contentful data: ' + resolveResponse);
+            this.logger.error('Failed to fetch or parse Contentful data: ', resolveResponse);
             return;
         }  
+
+        this.logger.log(`Contentful-API response: ${resolveResponse.length} Items.`)
+
         const productEntities = resolveResponse.map(async (item) => {
             const newProductDto: CreateProductDto = {
                 ...item.fields,
@@ -37,6 +42,10 @@ export class ContentfulApiService {
             const res = await this.productsService.createOrUpdate(newProductDto)
             return res
         })
+
+
+        return resolveResponse.length
+
     }
 
 }
