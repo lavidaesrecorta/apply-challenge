@@ -6,7 +6,7 @@ export class CreateProductDto {
     model: string;
     category: string;
     color: string;
-    price: string;
+    price: number;
     currency: string;
     stock: number;
     createdAt: Date;

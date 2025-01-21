@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { EntityManager, Repository } from 'typeorm';
+import { Between, EntityManager, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginatedResult, PriceRange } from './interfaces/paginatedResult.interface';
 
 @Injectable()
 export class ProductsService {
@@ -33,13 +34,42 @@ export class ProductsService {
     return this.productsRepository.findOneBy({id});
   }
 
+  async findPaginated(pageNumber: number = 1, filter: Partial<CreateProductDto>, priceRange: PriceRange): Promise<PaginatedResult> {
+    const take = 5
+    const skip = (pageNumber - 1) * take
+
+    delete filter.price
+
+    const [data,total] = await this.productsRepository.findAndCount({
+      take,
+      skip,
+      where: { ...filter, price: Between(priceRange.min,priceRange.max) }
+    });
+
+    const totalPages = Math.ceil(total / take);
+    return {
+      data,
+      total,
+      pageNumber,
+      totalPages
+    }
+  }
+
   async update(id: number, updateProductDto: UpdateProductDto) {
     const product = await this.productsRepository.findOneBy({id})
-    product.deletedAt = updateProductDto.deletedAt
+    //add update logic
     return this.entityManager.save(product);
   }
 
   async remove(id: number) {
     return this.productsRepository.delete(id);
+  }
+
+  async softDelete(id: number) {
+    return this.productsRepository
+    .createQueryBuilder()
+    .softDelete()
+    .where("id = :id", { id })
+    .execute();
   }
 }

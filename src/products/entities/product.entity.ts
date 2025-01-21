@@ -18,18 +18,16 @@ export class Product {
     category: string;
     @Column()
     color: string;
-    @Column()
-    price: string;
+    @Column({ type: "numeric", precision: 10, scale: 2 })
+    price: number;
     @Column()
     currency: string;
     @Column()
     stock: number;
-    @Column({ type: 'timestamptz' }) // Recommended
-    createdAt: Date;
-    @Column({ type: 'timestamptz' }) // Recommended
-    updatedAt: Date;
-    @Column({ type: 'timestamptz', nullable: true }) // Recommended
-    deletedAt: Date | null;
+    @Column({ type: 'timestamptz' }) 
+    contentfulCreatedAt: Date;
+    @Column({ type: 'timestamptz' })
+    contentfulUpdatedAt: Date;
 
 
 
