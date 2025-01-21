@@ -28,19 +28,6 @@ export class ProductsService {
     return await this.create(createProductDto)
   }
 
-  async create(createProductDto: CreateProductDto) {
-    const product = new Product(createProductDto)
-    return await this.entityManager.save(product);
-  }
-
-  async findAll() {
-    return this.productsRepository.find()
-  }
-
-  async findOne(id: number) {
-    return this.productsRepository.findOneBy({id});
-  }
-
   async findPaginated(pageNumber: number = 1, filter: Partial<CreateProductDto>, priceRange?: PriceRange): Promise<PaginatedResult> {
     const take = 5
     const skip = (pageNumber - 1) * take
@@ -65,16 +52,6 @@ export class ProductsService {
       pageNumber,
       totalPages
     }
-  }
-
-  async update(id: number, updateProductDto: UpdateProductDto) {
-    const product = await this.productsRepository.findOneBy({id})
-    //add update logic
-    return this.entityManager.save(product);
-  }
-
-  async remove(id: number) {
-    return this.productsRepository.delete(id);
   }
 
   async softDelete(id?: number, sku?: string) {
@@ -109,4 +86,31 @@ export class ProductsService {
     }
     return false
   }
+
+  async create(createProductDto: CreateProductDto) {
+    const product = new Product(createProductDto)
+    return await this.entityManager.save(product);
+  }
+
+  async findAll() {
+    return this.productsRepository.find()
+  }
+
+  async findOne(id: number) {
+    return this.productsRepository.findOneBy({id});
+  }
+
+  
+
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    const product = await this.productsRepository.findOneBy({id})
+    //add update logic
+    return this.entityManager.save(product);
+  }
+
+  async remove(id: number) {
+    return this.productsRepository.delete(id);
+  }
+
+ 
 }
