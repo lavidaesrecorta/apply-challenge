@@ -29,7 +29,7 @@ export class Product {
     @Column({ type: 'timestamptz' })
     contentfulUpdatedAt: Date;
     @DeleteDateColumn()
-    deletedAt: Date;  
+    deletedAt: Date | null;  
 
 
     constructor(product: Partial<Product>){

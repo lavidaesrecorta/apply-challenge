@@ -8,7 +8,6 @@ import { PaginatedResult, PriceRange } from './interfaces/paginatedResult.interf
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-
   @Get()
   async findPaginated(
     @Query('page') page: number = 1, // Default to 1 if no page is provided

@@ -11,3 +11,8 @@ export interface PriceRange {
     max: number
     min: number
 }
+
+export interface DateRange {
+    max: Date
+    min: Date
+}

@@ -1,4 +1,17 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
+import { DateRange, PriceRange } from 'src/products/interfaces/paginatedResult.interface';
+import { ReportsService } from './reports.service';
 
 @Controller('reports')
-export class ReportsController {}
+export class ReportsController {
+  constructor(private readonly reportsService: ReportsService) {}
+    @Get()
+    async getNonDeletedPercent(
+        @Query('priceRange') priceRange: string,
+        @Query('dateRange') dateRange: string,
+  )  {
+      const parsedPriceRange : PriceRange | null = priceRange ? JSON.parse(decodeURIComponent(priceRange)) : null;
+      const parsedDateRange : DateRange | null = dateRange ? JSON.parse(decodeURIComponent(dateRange)) : null;
+      return this.reportsService.getDeletedPercentage(parsedPriceRange, parsedDateRange)
+    }
+}

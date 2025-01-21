@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Between, EntityManager, MoreThanOrEqual, Repository } from 'typeorm';
+import { Between, EntityManager, IsNull, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginatedResult, PriceRange } from './interfaces/paginatedResult.interface';
+import { DateRange, PaginatedResult, PriceRange } from './interfaces/paginatedResult.interface';
 
 @Injectable()
 export class ProductsService {
@@ -35,7 +35,7 @@ export class ProductsService {
     delete filter.price
     let priceFilter = MoreThanOrEqual(0)
 
-    if (priceRange != null) {
+    if (priceRange != null && priceRange.max >= priceRange.min) {
       priceFilter = Between(priceRange.min,priceRange.max)
     }
 
@@ -87,6 +87,31 @@ export class ProductsService {
     return false
   }
 
+  async getNonDeletedCount(priceRange: PriceRange, dateRange: DateRange){
+
+    const queryBuilder = this.productsRepository.createQueryBuilder()
+    if (priceRange != null) {
+      if (priceRange.max >= priceRange.min) {
+      const priceFilter = Between(priceRange.min,priceRange.max)
+      queryBuilder.where({price: priceFilter})
+    }
+  }
+
+    if (dateRange != null) {
+      const dateFilter = Between(dateRange.min,dateRange.max)
+      queryBuilder.andWhere([
+        {contentfulCreatedAt: dateFilter},
+        {contentfulUpdatedAt: dateFilter}
+      ])
+    }
+
+    const nonDeletedCount = await queryBuilder.getCount()   
+    const totalCount = await queryBuilder.withDeleted().getCount();
+    return [totalCount,nonDeletedCount] 
+  }
+
+  // Default CRUD methods below...
+
   async create(createProductDto: CreateProductDto) {
     const product = new Product(createProductDto)
     return await this.entityManager.save(product);
@@ -99,8 +124,6 @@ export class ProductsService {
   async findOne(id: number) {
     return this.productsRepository.findOneBy({id});
   }
-
-  
 
   async update(id: number, updateProductDto: UpdateProductDto) {
     const product = await this.productsRepository.findOneBy({id})
