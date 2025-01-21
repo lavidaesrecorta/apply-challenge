@@ -6,6 +6,7 @@ import { DatabaseModule } from './database/database.module';
 import { ProductsModule } from './products/products.module';
 import { ContentfulApiService } from './contentful-api/contentful-api.service';
 import { ContentfulApiModule } from './contentful-api/contentful-api.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { ContentfulApiModule } from './contentful-api/contentful-api.module';
     }),
     DatabaseModule,
     ProductsModule,
-    ContentfulApiModule
+    ContentfulApiModule,
+    ReportsModule
   ],
   controllers: [AppController],
   providers: [AppService, ContentfulApiService],
