@@ -5,7 +5,9 @@ services:
     image: postgres
     restart: always
     environment:
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: products
+      POSTGRES_USER: apply_challenge
+      POSTGRES_PASSWORD: apply backend challenge
     container_name: postgres
     volumes:
       - ./pgdata:/var/lib/postgresql/data
