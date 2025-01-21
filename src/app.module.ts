@@ -11,12 +11,12 @@ import { ReportsModule } from './reports/reports.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     DatabaseModule,
     ProductsModule,
     ContentfulApiModule,
-    ReportsModule
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [AppService, ContentfulApiService],

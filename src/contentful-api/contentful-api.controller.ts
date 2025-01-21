@@ -4,14 +4,14 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Controller('contentful-api')
 export class ContentfulApiController {
-    constructor(private readonly contentfulApiService: ContentfulApiService){}
+  constructor(private readonly contentfulApiService: ContentfulApiService) {}
 
-    async onModuleInit() {
-        await this.getFromContentfulAndStoreInDb();
-    }
-    
-    @Cron(CronExpression.EVERY_HOUR)
-    async getFromContentfulAndStoreInDb() {
-        await this.contentfulApiService.FetchDataFromContentful()
-    }
+  async onModuleInit() {
+    await this.getFromContentfulAndStoreInDb();
+  }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async getFromContentfulAndStoreInDb() {
+    await this.contentfulApiService.FetchDataFromContentful();
+  }
 }

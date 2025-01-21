@@ -5,9 +5,8 @@ import { ContentfulApiService } from './contentful-api.service';
 import { ContentfulApiController } from './contentful-api.controller';
 
 @Module({
-    imports: [ConfigModule, ProductsModule],
-    providers: [ContentfulApiService],
-    controllers: [ContentfulApiController]
+  imports: [ConfigModule, ProductsModule],
+  providers: [ContentfulApiService],
+  controllers: [ContentfulApiController],
 })
-export class ContentfulApiModule {
-}
+export class ContentfulApiModule {}

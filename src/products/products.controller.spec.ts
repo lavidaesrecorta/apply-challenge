@@ -2,7 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { PaginatedResult, PriceRange } from './interfaces/paginatedResult.interface';
+import {
+  PaginatedResult,
+  PriceRange,
+} from './interfaces/paginatedResult.interface';
 
 // Mock the ProductsService
 const mockProductsService = {
@@ -49,10 +52,18 @@ describe('ProductsController', () => {
 
       mockProductsService.findPaginated.mockResolvedValue(expectedResult);
 
-      const result = await productsController.findPaginated(page, filter, priceRange);
+      const result = await productsController.findPaginated(
+        page,
+        filter,
+        priceRange,
+      );
 
       expect(result).toEqual(expectedResult);
-      expect(mockProductsService.findPaginated).toHaveBeenCalledWith(page, parsedFilter, parsedPriceRange);
+      expect(mockProductsService.findPaginated).toHaveBeenCalledWith(
+        page,
+        parsedFilter,
+        parsedPriceRange,
+      );
     });
 
     it('should return empty array if no products found', async () => {
@@ -70,10 +81,18 @@ describe('ProductsController', () => {
 
       mockProductsService.findPaginated.mockResolvedValue(expectedResult);
 
-      const result = await productsController.findPaginated(page, filter, priceRange);
+      const result = await productsController.findPaginated(
+        page,
+        filter,
+        priceRange,
+      );
 
       expect(result).toEqual(expectedResult);
-      expect(mockProductsService.findPaginated).toHaveBeenCalledWith(page, parsedFilter, parsedPriceRange);
+      expect(mockProductsService.findPaginated).toHaveBeenCalledWith(
+        page,
+        parsedFilter,
+        parsedPriceRange,
+      );
     });
   });
 
@@ -96,7 +115,6 @@ describe('ProductsController', () => {
       mockProductsService.softDelete.mockResolvedValue(undefined);
 
       await productsController.removeSku(sku);
-
     });
   });
 });

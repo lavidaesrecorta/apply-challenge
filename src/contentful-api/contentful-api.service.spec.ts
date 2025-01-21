@@ -38,35 +38,33 @@ describe('ContentfulApiService', () => {
     service = module.get<ContentfulApiService>(ContentfulApiService);
     productsService = module.get<ProductsService>(ProductsService);
     configService = module.get<ConfigService>(ConfigService);
-
-    
   });
 
   it('should construct the baseUrl and fetch data from Contentful', async () => {
-    const mockData= {
-        items: [
-          {
-            metadata: {tags: {}, concepts: {}},
-            sys: {
-              id: '1',
-              locale: 'en-US',
-              createdAt: '2021-01-01T00:00:00Z',
-              updatedAt: '2021-01-02T00:00:00Z',
-            },
-            fields: {
-              sku: "1",
-              name: "name",
-              brand: "brand",
-              model: "model",
-              category: "cat",
-              color: "color",
-              price: 10,
-              currency: "currency",
-              stock: 1,
-            },
+    const mockData = {
+      items: [
+        {
+          metadata: { tags: {}, concepts: {} },
+          sys: {
+            id: '1',
+            locale: 'en-US',
+            createdAt: '2021-01-01T00:00:00Z',
+            updatedAt: '2021-01-02T00:00:00Z',
           },
-        ]
-      };
+          fields: {
+            sku: '1',
+            name: 'name',
+            brand: 'brand',
+            model: 'model',
+            category: 'cat',
+            color: 'color',
+            price: 10,
+            currency: 'currency',
+            stock: 1,
+          },
+        },
+      ],
+    };
 
     (fetch as jest.Mock).mockResolvedValue({
       json: jest.fn().mockResolvedValue(mockData),
@@ -76,7 +74,7 @@ describe('ContentfulApiService', () => {
 
     // Verify that the baseUrl was constructed correctly
     expect(service.baseUrl).toBe(
-      'https://cdn.contentful.com/spaces/mock_space_id/environments/mock_environment/entries?access_token=mock_access_token&content_type=mock_content_type'
+      'https://cdn.contentful.com/spaces/mock_space_id/environments/mock_environment/entries?access_token=mock_access_token&content_type=mock_content_type',
     );
 
     console.log('Expected baseUrl:', service.baseUrl);

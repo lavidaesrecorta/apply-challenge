@@ -1,8 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { PaginatedResult, PriceRange } from './interfaces/paginatedResult.interface';
+import {
+  PaginatedResult,
+  PriceRange,
+} from './interfaces/paginatedResult.interface';
 
 @Controller('products')
 export class ProductsController {
@@ -13,10 +25,18 @@ export class ProductsController {
     @Query('page') page: number = 1, // Default to 1 if no page is provided
     @Query('filter') filter: string,
     @Query('priceRange') priceRange: string,
-): Promise<PaginatedResult>  {
-    const parsedFiler : Partial<CreateProductDto> = filter ? JSON.parse(decodeURIComponent(filter)) : {};
-    const parsedPriceRange : PriceRange | null = priceRange ? JSON.parse(decodeURIComponent(priceRange)) : null;
-    return this.productsService.findPaginated(page, parsedFiler, parsedPriceRange);
+  ): Promise<PaginatedResult> {
+    const parsedFiler: Partial<CreateProductDto> = filter
+      ? JSON.parse(decodeURIComponent(filter))
+      : {};
+    const parsedPriceRange: PriceRange | null = priceRange
+      ? JSON.parse(decodeURIComponent(priceRange))
+      : null;
+    return this.productsService.findPaginated(
+      page,
+      parsedFiler,
+      parsedPriceRange,
+    );
   }
 
   @Delete('/id/:id')
@@ -48,7 +68,7 @@ export class ProductsController {
 
   // @Patch(':id')
   // async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    
+
   //   await this.productsService.update(+id, updateProductDto);
   // }
 
