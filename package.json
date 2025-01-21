@@ -29,6 +29,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^5.0.0",
+    "@nestjs/swagger": "^11.0.2",
     "@nestjs/typeorm": "^11.0.0",
     "globals": "^15.14.0",
     "pg": "^8.13.1",
