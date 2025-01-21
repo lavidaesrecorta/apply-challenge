@@ -22,7 +22,7 @@ export class ReportsController {
       ? JSON.parse(decodeURIComponent(dateRange))
       : null;
     return {
-      nonDeletedPercentage: this.reportsService.getNonDeletedPercentage(
+      nonDeletedPercentage: await this.reportsService.getNonDeletedPercentage(
         parsedPriceRange,
         parsedDateRange,
       ),
@@ -31,7 +31,7 @@ export class ReportsController {
 
   @Get('percentage/deleted')
   async getDeletedPercent() {
-    return { deletedPercentage: this.reportsService.getDeletedPercentage() };
+    return { deletedPercentage: await this.reportsService.getDeletedPercentage() };
   }
 
   @Get('avg-price')
@@ -40,7 +40,7 @@ export class ReportsController {
       ? decodeURIComponent(category)
       : null;
     return {
-      avgPrice: this.reportsService.getAvgPriceByCategory(parsedCategory),
+      avgPrice: await this.reportsService.getAvgPriceByCategory(parsedCategory),
     };
   }
 }
